@@ -30,9 +30,11 @@ function parseDescription(description) {
       Tela = spec.replace(/\"|\s*inch/i, '').trim();
     } else if (/Core|Pentium|AMD|Ryzen/i.test(spec)) {
       Processador = spec.trim();
-    } else if (/^\d{1,2}GB$/i.test(spec)) {
+    } else if (/^\d{1,2}\s*GB$/i.test(spec)) {
+      // Captura apenas a RAM quando for isolada (ex: "8GB")
       Ram = spec.trim();
-    } else if (/(\d{3,4}GB|TB|SSD|HDD)/i.test(spec)) {
+    } else if (/(\d{3,4}GB|TB|SSD|HDD|\d+\s*GB\s*\+\s*\d+\s*TB)/i.test(spec)) {
+      // Captura armazenamento que menciona "SSD", "HDD", ou estruturas compostas como "128GB + 1TB"
       Armazenamento = spec.trim();
     } else if (/Windows|DOS|FreeDOS/i.test(spec)) {
       SO = spec.trim();
@@ -40,6 +42,7 @@ function parseDescription(description) {
       PlacaDeVideo = spec.trim();
     }
   }
+
 
   return {
     Modelo: cleanSpecs[0] || '',
